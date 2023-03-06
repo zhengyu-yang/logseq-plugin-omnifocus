@@ -1,0 +1,35 @@
+{
+  "name": "logseq-plugin-omnifocus",
+  "version": "0.1.0",
+  "description": "Send tasks to OmniFocus",
+  "main": "dist/index.html",
+  "targets": {
+    "main": false
+  },
+  "default": "dist/index.html",
+
+  "scripts": {
+    "dev": "parcel ./src/index.html --public-url ./",
+    "build": "parcel build --public-url . --no-source-maps src/index.html"
+  },
+
+  
+  "author": "Zhengyu Yang",
+  
+  "license": "MIT",
+    
+  "devDependencies": {
+    "parcel": "^2.0.0"
+  },
+  
+  "dependencies": {
+    "@logseq/libs": "^0.0.14",
+    "remove-markdown": "^0.5.0"
+  },
+  
+  "logseq": {
+    "id": "logseq-plugin-omnifocus",
+    "title": "Logseq OmniFocus",
+    "icon": "./icon.png"
+  }
+}
