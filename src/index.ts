@@ -43,11 +43,6 @@ const of_js_new_task = `(args => {
   const dueDate = new Date(args[2]);
   const deferDate = new Date(args[3]);
 
-  let logseq_tag = Tag.byIdentifier('logseq');
-  if (logseq_tag == null){
-      logseq_tag = new Tag('logseq');
-  }
-
   let task = new Task(task_name);
   task.note = note;
   if (!isNaN(dueDate)){
@@ -56,7 +51,9 @@ const of_js_new_task = `(args => {
   if (!isNaN(deferDate)){
       task.deferDate = deferDate;
   }
-  task.addTag(logseq_tag);
+
+  task.addTag(tagNamed('logseq'));
+  
 })(argument)`
 
 async function block2OF(block: BlockEntity) {
