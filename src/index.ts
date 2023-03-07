@@ -14,7 +14,7 @@ const settings = [
 logseq.useSettingsSchema(settings);
 
 // ref: https://github.com/ahonn/logseq-plugin-todo/blob/6cf084a2419b9c6df78e5eb32ae5d06d73afe4e4/src/models/TaskEntity.ts
-function get_clean_block_content(block: BlockEntity){
+function get_clean_block_content(block: BlockEntity) {
   let content = block.content;
   content = content.replace(block.marker, '');
   content = content.replace(`[#${block.priority}]`, '');
@@ -26,8 +26,8 @@ function get_clean_block_content(block: BlockEntity){
   return content.trim();
 }
 
-function convert_logseq_date(date: number | undefined){
-  if (date == undefined){
+function convert_logseq_date(date: number | undefined) {
+  if (date == undefined) {
     return "NULL";
   }
   const d = date.toString();
@@ -59,7 +59,7 @@ const of_js_new_task = `(args => {
   task.addTag(logseq_tag);
 })(argument)`
 
-async function block2OF(block: BlockEntity){
+async function block2OF(block: BlockEntity) {
   const content = get_clean_block_content(block);
   const name = content.split('\n')[0];
 
@@ -74,17 +74,24 @@ async function block2OF(block: BlockEntity){
   // of_url.searchParams.append('script', of_js_new_task);
   // of_url.searchParams.append('arg', `["${name}", "${note}", "${due_date}", "${defer_date}"]`);
 
-  const of_url = `omnifocus://localhost/omnijs-run?script=${encodeURIComponent(of_js_new_task)}&arg=${encodeURIComponent(`["${name}", "${note}", "${due_date}", "${defer_date}"]`)}`;    
+  const of_url = `omnifocus://localhost/omnijs-run?script=${encodeURIComponent(of_js_new_task)}&arg=${encodeURIComponent(`["${name}", "${note}", "${due_date}", "${defer_date}"]`)}`;
   window.open(of_url);
 }
 
-async function selectedBlocks2OF(){
+async function selectedBlocks2OF() {
   let blocks = await logseq.Editor.getSelectedBlocks();
+  // selected blocks from query result have duplication
+  blocks = blocks!.filter((value, index, self) =>
+    index === self.findIndex((t) => (
+      t.uuid === value.uuid
+    ))
+  );
+
   blocks!.forEach(block2OF);
   logseq.UI.showMsg("Send to OmniFocus!");
 }
 
-async function main(){
+async function main() {
   console.log("logseq-of-sorted-plugin loaded");
 
   logseq.App.registerCommandPalette({
