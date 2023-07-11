@@ -72,6 +72,10 @@ async function block2OF(block: BlockEntity) {
   // of_url.searchParams.append('arg', `["${name}", "${note}", "${due_date}", "${defer_date}"]`);
 
   const of_url = `omnifocus://localhost/omnijs-run?script=${encodeURIComponent(of_js_new_task)}&arg=${encodeURIComponent(`["${name}", "${note}", "${due_date}", "${defer_date}"]`)}`;
+  
+  // Insert the UUID to file to ensure the link can be opened on other devices
+  logseq.Editor.upsertBlockProperty(block.uuid, 'id', block.uuid);
+
   window.open(of_url);
 }
 
